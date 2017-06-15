@@ -1,21 +1,22 @@
-<div class="flex-table assignment-repo-list-item<%= ' disabled' if @assignment_repo.disabled? %>">
-  <div class="flex-table-item">
-    <%= image_tag @assignment_repo.github_user.github_avatar_url(96), height: 48, width: 48, class: 'avatar left', alt: "@#{@assignment_repo.github_user.login}" %>
+<% view = AssignmentRepoView.new(assignment_repo: @assignment_repo) %>
 
-    <div class="student-information">
-      <% css_class  = 'css-truncate css-truncate-target student-login' %>
-      <% css_class += ' disabled' if @assignment_repo.disabled? %>
-      <%= link_to "https://github.com/#{@assignment_repo.github_user.login}", class: css_class do %>
-        <strong class="css-truncate-target"><%= @assignment_repo.github_user.login %></strong>
-      <% end %>
-
-      <span class="text-muted css-truncate css-truncate-target"><%= @assignment_repo.github_user.name %></span>
+<div class='group-assignment-repo-list-item'>
+  <div>
+    <div style='display: flex;'>
+      <div>
+        <%= image_tag @assignment_repo.github_user.github_avatar_url(96), height: 48, width: 48, class: 'avatar avatar-small', alt: "@#{@assignment_repo.github_user.login}" %>
+      </div>
+      <div>
+        <%= link_to "https://github.com/#{@assignment_repo.github_user.login}", class: "assignment-repo-github-url #{view.disabled_class}", target: '_blank' do %>
+          <h3 class="css-truncate css-truncate-target assignment-repo-header"><%= @assignment_repo.github_user.login %></h3>
+        <% end %>
+      </div>
+    </div>
+    <div class="assignment-properties">
+      <%= render 'shared/commit_repo_detail', text: view.commit_text, url: 'Dummy URL' %>
     </div>
   </div>
-
-  <div class="flex-table-item text-right">
-    <strong class="css-truncate css-truncate-target">
-      <%= link_to @assignment_repo.github_repository.full_name, @assignment_repo.github_repository.html_url, class: "#{'disabled' if @assignment_repo.disabled?}" %>
-    </strong>
+  <div>
+    <%= link_to 'View Repository', view.repo_url, class: 'btn btn-green right', role: 'button', target: '_blank', disabled: view.disabled_class %>
   </div>
 </div>
